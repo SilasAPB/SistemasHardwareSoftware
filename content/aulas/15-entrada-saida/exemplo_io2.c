@@ -14,7 +14,7 @@ int main (int argc, char *argv[]) {
     scanf("%s", arq1);
     int fd1 = open(arq1, O_WRONLY | O_CREAT, 0700);
     for (int i = 0; i < 10; i++) {
-        buf[0] = '0' + i;
+        buf[0] = '0' + i; // SAPORRA È ASCII
         write(fd1, buf, 1);
         //sleep(2); // só está aqui para facilitar nossa visualização. Tirar para os exercícios
     }
