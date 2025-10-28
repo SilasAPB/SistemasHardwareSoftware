@@ -7,21 +7,31 @@
 #include <stdlib.h>
 
 volatile int count =0;
+void sig_handler(int num);
 // Fora da main, criamos a função que será nosso handler
-void sig_handler(int num) {
+
+void cont_handler(int num) {
     // faz algo aqui
-    count++;
-    if (count == 3) {
+        printf("continuando");
         struct sigaction s;
 
-        s.sa_handler = SIG_DFL;
+        s.sa_handler = sig_handler;
         s.sa_flags = 0;
         sigemptyset(&s.sa_mask);
 
-        sigaction(SIGINT, &s, NULL);
+        sigaction(SIGTSTP, &s, NULL);
+}
+void sig_handler(int num) {
+    // faz algo aqui
+        printf("finalizando por um tstp");
+        struct sigaction s;
 
-        kill(getpid(),SIGINT);
-    }
+        s.sa_handler = cont_handler;
+        s.sa_flags = 0;
+        sigemptyset(&s.sa_mask);
+
+        sigaction(SIGCONT, &s, NULL);
+
 }
 
 int main() {
@@ -32,7 +42,7 @@ int main() {
     sigemptyset(&s.sa_mask);
     s.sa_flags = 0;
 
-    sigaction(SIGINT, &s, NULL);
+    sigaction(SIGTSTP, &s, NULL);
 
     printf("Meu pid: %d\n", getpid());
     

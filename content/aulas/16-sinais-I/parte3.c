@@ -10,11 +10,14 @@ int main() {
 
     filho = fork();
     if (filho == 0) {
-        int i = 1/0;
-        printf("Divisão por zero!\n");
+        for(;;){
+            pid_t pid =getpid();
+            printf("Amo entrar em Looping! Meu pid é:%d\n",pid);
+        }
     }
     else{
-
+        sleep(10);
+        kill(filho,9);
         pid_t pid_filho=wait(&wstatus);
         char *strsig=strsignal(WTERMSIG(wstatus));
         printf("o meu filho de pid %d terminou\n terminou bem: %d\n terminou de maniera abrupta: %d\n, terminou porque: %d\n string: %s",pid_filho,WIFEXITED(wstatus),WIFSIGNALED(wstatus),WTERMSIG(wstatus),strsig);

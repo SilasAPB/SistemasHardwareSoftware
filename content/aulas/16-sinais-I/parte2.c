@@ -10,8 +10,11 @@ int main() {
 
     filho = fork();
     if (filho == 0) {
-        int i = 1/0;
-        printf("Divisão por zero!\n");
+        for(;;){
+            pid_t pid =getpid();
+            printf("Amo entrar em Looping! Meu pid é:%d\n",pid);
+
+        }
     }
     else{
 
