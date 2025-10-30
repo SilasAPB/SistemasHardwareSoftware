@@ -28,6 +28,7 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < n; i++) {
         scanf("%lf", &vetor[i]);
     }
+    soma = 0;
 
     vet_aa = malloc(4 * sizeof(struct soma_parcial_args));
     pthread_t *tids = malloc(4 * sizeof(pthread_t));
