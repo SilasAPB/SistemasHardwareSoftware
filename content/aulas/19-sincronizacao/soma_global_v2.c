@@ -5,8 +5,10 @@
 struct soma_parcial_args {
     double *vetor;
     int start, end;
+    int result;
 };
 // varivel global
+// Poderiamos usar o proprio struct para retorno para soma_parcial usando o result e somando a penass ele la embaixo com a soma 
 double soma = 0;
 
 void *soma_parcial(void *_arg) {
@@ -43,6 +45,7 @@ int main(int argc, char *argv[]) {
             vet_aa[i].end = n;
         else   
             vet_aa[i].end = (i+1)*regiao;
+        vet_aa->result=0;
         pthread_create(&id[i],NULL,soma_parcial,&vet_aa[i]);
     }
 

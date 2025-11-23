@@ -5,15 +5,21 @@
 struct soma_parcial_args {
     double *vetor;
     int start, end;
+    pthread_mutex_t * mutex_soma;
 };
 
 double soma = 0;
 void *soma_parcial(void *_arg) {
     struct soma_parcial_args *spa = _arg;
-
+    int soma_parcial=0;
     for (int i = spa->start; i < spa->end; i++) {
-        soma += spa->vetor[i];
+       
+        soma_parcial += spa->vetor[i];
+        
     }
+     pthread_mutex_lock(spa->mutex_soma);
+    soma+=soma_parcial;
+    pthread_mutex_unlock(spa->mutex_soma);
 
     return NULL;
 }
@@ -23,6 +29,9 @@ int main(int argc, char *argv[]) {
     int n;
     scanf("%d", &n);
     struct soma_parcial_args *vet_aa;
+
+
+    pthread_mutex_t mutex_soma = PTHREAD_MUTEX_INITIALIZER;
 
     vetor = malloc(sizeof(double) * n);
     for (int i = 0; i < n; i++) {
@@ -36,7 +45,7 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < 4; i++) {
         vet_aa[i].vetor = vetor;
         vet_aa[i].start = i * n / 4;
-
+        vet_aa[i].mutex_soma = &mutex_soma;
         if (i == 3) {
             vet_aa[i].end = n;
         } else {
@@ -60,6 +69,7 @@ int main(int argc, char *argv[]) {
     aa.vetor = vetor;
     aa.start = 0;
     aa.end = n;
+    aa.mutex_soma=&mutex_soma;
     soma_parcial(&aa);
     printf("Sequencial: %lf\n", soma);
 
